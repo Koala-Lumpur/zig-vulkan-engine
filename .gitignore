@@ -1,0 +1,95 @@
+# =========================
+# Zig build artifacts
+# =========================
+
+zig-out/
+.zig-cache/
+zig-cache/
+
+# If you ever use custom cache dirs
+build/
+dist/
+
+# =========================
+# Compiled binaries
+# =========================
+
+*.exe
+*.out
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+*.dll
+
+# =========================
+# macOS
+# =========================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# =========================
+# Logs
+# =========================
+
+*.log
+
+# =========================
+# NeoVim / Vim
+# =========================
+
+*.swp
+*.swo
+*.swn
+*.un~
+Session.vim
+
+# If using local LSP cache
+.nvim/
+.lsp/
+
+# =========================
+# VSCode (if you ever open it)
+# =========================
+
+.vscode/
+
+# =========================
+# CLion / JetBrains
+# =========================
+
+.idea/
+
+# =========================
+# CMake (if you experiment)
+# =========================
+
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# =========================
+# Xcode (if ever used)
+# =========================
+
+DerivedData/
+*.xcworkspace
+*.xcodeproj
+
+# =========================
+# Environment files
+# =========================
+
+.env
+.env.local
+
+# =========================
+# Temporary assets
+# =========================
+
+*.tmp
+*.bak
