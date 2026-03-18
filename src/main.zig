@@ -1,31 +1,16 @@
+const engine = @import("engine");
+const glfw = @import("zglfw");
 const std = @import("std");
 
-const glfw = @cImport({
-    @cInclude("GLFW/glfw3.h");
-});
-
-const vk = @cImport({
-    @cInclude("vulkan/vulkan.h");
-});
-
 pub fn main() !void {
-    if(glfw.glfwInit() == 0) {
-        std.debug.print("failed to init GLFW\n", .{});
-        return;
-    }
+   try glfw.init();
+   defer glfw.terminate();
 
-    defer glfw.glfwTerminate();
+   const window = try glfw.createWindow(600, 600, "Zig Engine", null, null);
+   defer glfw.destroyWindow(window);
 
-    glfw.glfwWindowHint(glfw.GLFW_CLIENT_API, glfw.GLFW_NO_API);
-
-    const window = glfw.glfwCreateWindow(800, 600, "Zig Vulkan", null, null);
-
-    if(window == null) {
-        std.debug.print("Failed to create window\n", .{});
-        return;
-    }
-
-    while (glfw.glfwWindowShouldClose(window) == 0) {
-        glfw.glfwPollEvents();
-    }
+   while(!window.shouldClose()) {
+       glfw.pollEvents();
+       window.swapBuffers();
+   }
 }
