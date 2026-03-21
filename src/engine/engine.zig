@@ -26,13 +26,13 @@ pub fn Engine(comptime GameLogic: type) type {
         }
 
         pub fn create(allocator: std.mem.Allocator, gameLogic: *GameLogic, windowTitle: [:0]const u8) !Engine(GameLogic) {
-            const engineContext = EngineContext {
+            const engineContext = EngineContext{
                 .allocator = allocator,
                 .constants = try common.common.Constants.load(allocator),
                 .window = try engine.window.Window.create(windowTitle),
             };
 
-            const render = try engine.render.Render.create();
+            const render = try engine.render.Render.create(allocator, engineContext.constants);
 
             return .{
                 .engineContext = engineContext,

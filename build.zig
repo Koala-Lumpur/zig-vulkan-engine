@@ -29,20 +29,17 @@ pub fn build(b: *std.Build) void {
     zglfw_mod.addImport("vulkan", vulkan);
     exe.root_module.addImport("zglfw", zglfw_mod);
 
-    if(target.result.os.tag != .emscripten) {
+    if (target.result.os.tag != .emscripten) {
         exe.linkLibrary(zglfw.artifact("glfw"));
     }
 
-    const common = b.addModule("common", .{
-        .root_source_file = b.path("src/engine/common/mod.zig")
-    });
+    const common = b.addModule("common", .{ .root_source_file = b.path("src/engine/common/mod.zig") });
     exe.root_module.addImport("common", common);
 
-    const engine = b.addModule("engine", .{
-        .root_source_file = b.path("src/engine/mod.zig")
-    });
+    const engine = b.addModule("engine", .{ .root_source_file = b.path("src/engine/mod.zig") });
     engine.addImport("common", common);
     engine.addImport("zglfw", zglfw_mod);
+    engine.addImport("vulkan", vulkan);
     exe.root_module.addImport("engine", engine);
 
     b.installArtifact(exe);
@@ -54,7 +51,7 @@ pub fn build(b: *std.Build) void {
 
     run_cmd.step.dependOn(b.getInstallStep());
 
-    if(b.args) |args| {
+    if (b.args) |args| {
         run_cmd.addArgs(args);
     }
 }
