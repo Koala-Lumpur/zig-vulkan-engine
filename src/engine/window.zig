@@ -25,14 +25,14 @@ pub const Window = struct {
         log.debug("Creating window", .{});
 
         try glfw.init();
-        
+
         if (!glfw.isVulkanSupported()) {
             const err = error.VulkanNotSupported;
             std.log.err("Vulkan appears to not be supported: {s}", .{@errorName(err)});
             return err;
         }
 
-        const window = try glfw.createWindow(800, 800, windowTitle, null, null);
+        const window = try glfw.createWindow(1200, 800, windowTitle, null, null);
 
         log.debug("Created window", .{});
 
@@ -52,7 +52,7 @@ pub const Window = struct {
 
     pub fn getSize(self: *Window) !Size {
         const resolution = try self.window.getSize();
-        return Size { .width = resolution[0], .height = resolution[1] };
+        return Size{ .width = resolution[0], .height = resolution[1] };
     }
 
     pub fn isKeyPressed(self: *Window, keyCode: u8) bool {

@@ -9,7 +9,7 @@ pub fn main() !void {
 
     const windowTitle = "Zig Engine";
     var game = Game{};
-    var engineInstance = try engine.engine.Engine(Game).create(allocator, &game, windowTitle);
+    var engineInstance = try engine.Engine(Game).create(allocator, &game, windowTitle);
     try engineInstance.run();
 }
 
@@ -18,18 +18,18 @@ const Game = struct {
         _ = self;
     }
 
-    pub fn init(self: *Game, engineContext: *engine.engine.EngineContext) void {
+    pub fn init(self: *Game, engineContext: *engine.EngineContext) void {
         _ = self;
         _ = engineContext;
     }
 
-    pub fn input(self: *Game, engineContext: *engine.engine.EngineContext, deltaSeconds: f32) void {
+    pub fn input(self: *Game, engineContext: *engine.EngineContext, deltaSeconds: f32) void {
         _ = self;
         _ = engineContext;
         _ = deltaSeconds;
     }
 
-    pub fn update(self: *Game, engineContext: *engine.engine.EngineContext, deltaSeconds: f32) void {
+    pub fn update(self: *Game, engineContext: *engine.EngineContext, deltaSeconds: f32) void {
         _ = self;
         _ = engineContext;
         _ = deltaSeconds;

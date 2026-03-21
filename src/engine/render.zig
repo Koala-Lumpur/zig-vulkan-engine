@@ -11,7 +11,7 @@ pub const Render = struct {
         return .{};
     }
 
-    pub fn render(self: *Render, engineContext: *engine.engine.EngineContext) !void {
+    pub fn render(self: *Render, engineContext: *engine.EngineContext) !void {
         _ = self;
         _ = engineContext;
     }
