@@ -41,6 +41,7 @@ pub fn build(b: *std.Build) void {
     const engine = b.addModule("engine", .{
         .root_source_file = b.path("src/engine/mod.zig")
     });
+    engine.addImport("common", common);
     engine.addImport("zglfw", zglfw_mod);
     exe.root_module.addImport("engine", engine);
 

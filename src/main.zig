@@ -1,16 +1,37 @@
 const engine = @import("engine");
-const glfw = @import("zglfw");
 const std = @import("std");
 
 pub fn main() !void {
-   try glfw.init();
-   defer glfw.terminate();
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    defer if (gpa.deinit() == .leak) @panic("Memory Leaked");
 
-   const window = try glfw.createWindow(600, 600, "Zig Engine", null, null);
-   defer glfw.destroyWindow(window);
+    const allocator = gpa.allocator();
 
-   while(!window.shouldClose()) {
-       glfw.pollEvents();
-       window.swapBuffers();
-   }
+    const windowTitle = "Zig Engine";
+    var game = Game{};
+    var engineInstance = try engine.engine.Engine(Game).create(allocator, &game, windowTitle);
+    try engineInstance.run();
 }
+
+const Game = struct {
+    pub fn cleanup(self: *Game) void {
+        _ = self;
+    }
+
+    pub fn init(self: *Game, engineContext: *engine.engine.EngineContext) void {
+        _ = self;
+        _ = engineContext;
+    }
+
+    pub fn input(self: *Game, engineContext: *engine.engine.EngineContext, deltaSeconds: f32) void {
+        _ = self;
+        _ = engineContext;
+        _ = deltaSeconds;
+    }
+
+    pub fn update(self: *Game, engineContext: *engine.engine.EngineContext, deltaSeconds: f32) void {
+        _ = self;
+        _ = engineContext;
+        _ = deltaSeconds;
+    }
+};
