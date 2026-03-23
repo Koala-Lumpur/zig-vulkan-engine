@@ -34,7 +34,7 @@ pub const VulkanInstance = struct {
         try extensionNames.appendSlice(allocator, glfwExtensions);
         const is_macos = builtin.target.os.tag == .macos;
         if (is_macos) {
-            try extensionNames.append("VK_KHR_portability_enumeration");
+            try extensionNames.append(allocator, "VK_KHR_portability_enumeration");
         }
 
         var layerNames = try std.ArrayList([*:0]const u8).initCapacity(allocator, 2);
