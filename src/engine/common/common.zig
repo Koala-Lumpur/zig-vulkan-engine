@@ -9,7 +9,7 @@ pub const Constants = struct {
 
         const constants = Constants{
             .updatesPerSecond = 40,
-            .validation = false,
+            .validation = true,
         };
 
         return constants;
