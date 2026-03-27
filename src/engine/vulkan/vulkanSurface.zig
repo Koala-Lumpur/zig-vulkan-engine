@@ -52,7 +52,7 @@ pub const VulkanSurface = struct {
         defer allocator.free(surfaceFormats);
 
         for (surfaceFormats) |surfaceFormat| {
-            if (std.mem.eql(surfaceFormat, preferred)) {
+            if (std.meta.eql(surfaceFormat, preferred)) {
                 return preferred;
             }
         }

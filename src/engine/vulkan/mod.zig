@@ -4,3 +4,6 @@ pub const VulkanPhysicalDevice = @import("vulkanPhysicalDevice.zig").VulkanPhysi
 pub const VulkanSurface = @import("vulkanSurface.zig").VulkanSurface;
 pub const VulkanDevice = @import("vulkanDevice.zig").VulkanDevice;
 pub const VulkanQueue = @import("vulkanQueue.zig").VulkanQueue;
+pub const VulkanSwapchain = @import("vulkanSwapchain.zig").VulkanSwapchain;
+pub const VulkanImageView = @import("VulkanImageView.zig").VulkanImageView;
+pub const VulkanImageViewData = @import("VulkanImageView.zig").VulkanImageViewData;
