@@ -32,7 +32,7 @@ pub fn Engine(comptime GameLogic: type) type {
                 .window = try engine.window.Window.create(windowTitle),
             };
 
-            const render = try engine.render.Render.create(allocator, engineContext.constants);
+            const render = try engine.render.Render.create(allocator, engineContext.constants, engineContext.window.window);
 
             return .{
                 .engineContext = engineContext,

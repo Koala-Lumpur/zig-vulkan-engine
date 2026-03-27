@@ -3,17 +3,34 @@ const vulkan = @import("vulkan");
 const vk = @import("mod.zig");
 
 const log = std.log.scoped(.vk);
-const requiredExtensions = [_][*:0]const u8{vulkan.extensions.khr_swapchain.name};
 
 pub const VulkanDevice = struct {
     deviceProxy: vulkan.DeviceProxy,
  
     pub fn create(
         allocator: std.mem.Allocator, 
-        vulkanInstance: vk.instance.VulkanInstance,
-        vulkanPhysicalDevice: vk.physicalDevice.VulkanPhysicalDevice
+        vulkanInstance: vk.VulkanInstance,
+        vulkanPhysicalDevice: vk.VulkanPhysicalDevice
     ) !VulkanDevice {
-        const priority = [_]f32{};
+        
+        var extensions = try std.ArrayList([*:0]const u8).initCapacity(allocator, 0);
+        defer extensions.deinit(allocator);
+        try extensions.append(allocator, vulkan.extensions.khr_swapchain.name);
+
+        const extensionProperties = try vulkanInstance.instanceProxy.enumerateDeviceExtensionPropertiesAlloc(
+            vulkanPhysicalDevice.physicalDevice, null, allocator
+        );
+        defer allocator.free(extensionProperties);
+
+        for (extensionProperties) |prop| {
+            const name = std.mem.sliceTo(&prop.extension_name, 0);
+            if (std.mem.eql(u8, name, "VK_KHR_portability_subset")) {
+                try extensions.append(allocator, "VK_KHR_portability_subset");
+                break;
+            }
+        }
+
+        const priority = [_]f32{0};
         const queueCreateInfo = [_]vulkan.DeviceQueueCreateInfo {
             .{
                 .queue_family_index = vulkanPhysicalDevice.queuesInfo.graphics_family,
@@ -47,8 +64,8 @@ pub const VulkanDevice = struct {
             .queue_create_info_count = queueCount,
             .p_next = @ptrCast(&features12),
             .p_queue_create_infos = &queueCreateInfo,
-            .enabled_extension_count = requiredExtensions.len,
-            .pp_enabled_extension_names = requiredExtensions[0..].ptr,
+            .enabled_extension_count = @intCast(extensions.items.len),
+            .pp_enabled_extension_names = extensions.items.ptr,
             .p_enabled_features = @ptrCast(&features),
         };
         const device = try vulkanInstance.instanceProxy.createDevice(vulkanPhysicalDevice.physicalDevice, &deviceCreateInfo, null);
@@ -59,4 +76,14 @@ pub const VulkanDevice = struct {
 
         return .{ .deviceProxy = deviceProxy };
     } 
+
+    pub fn cleanup(self: *VulkanDevice, allocator: std.mem.Allocator) void {
+        log.debug("Destroying Vulkan Device", .{});
+        self.deviceProxy.destroyDevice(null);
+        allocator.destroy(self.deviceProxy.wrapper);
+    }
+
+    pub fn wait(self: *VulkanDevice) !void {
+        try self.deviceProxy.deviceWaitIdle();
+    }
 };

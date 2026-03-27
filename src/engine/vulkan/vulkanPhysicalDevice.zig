@@ -22,7 +22,7 @@ pub const VulkanPhysicalDevice = struct {
         allocator: std.mem.Allocator, 
         constants: common.common.Constants,
         instance: vulkan.InstanceProxy, 
-        vulkanSurface: vk.surface.VulkanSurface
+        vulkanSurface: vk.VulkanSurface
     ) !VulkanPhysicalDevice {
         
         const physicalDevices = try instance.enumeratePhysicalDevicesAlloc(allocator);
@@ -49,7 +49,7 @@ pub const VulkanPhysicalDevice = struct {
                     .queuesInfo = queuesInfo,
                     .memoryProperties = memoryProperties,
                 };
-                const name_slice = std.mem.SliceTo(&vulkanPhysicalDevice.properties.device_name, 0);
+                const name_slice = std.mem.sliceTo(&vulkanPhysicalDevice.properties.device_name, 0);
                 if (std.mem.eql(u8, constants.gpu, name_slice)) {
                     try list.insert(allocator, 0, vulkanPhysicalDevice);
                     break;
@@ -95,7 +95,7 @@ pub const VulkanPhysicalDevice = struct {
     fn hasGraphicsQueue(
         instance: vulkan.InstanceProxy,
         physicalDevice: vulkan.PhysicalDevice,
-        vulkanSurface: vk.surface.VulkanSurface,
+        vulkanSurface: vk.VulkanSurface,
         allocator: std.mem.Allocator,
     ) !?QueuesInfo {
         const families = try instance.getPhysicalDeviceQueueFamilyPropertiesAlloc(physicalDevice, allocator);

@@ -1,13 +1,13 @@
 const std = @import("std");
 
 pub const Constants = struct {
+    gpu: []const u8,
     updatesPerSecond: f32,
     validation: bool,
 
     pub fn load(allocator: std.mem.Allocator) !Constants {
-        _ = allocator;
-
         const constants = Constants{
+            .gpu = try allocator.dupe(u8, ""),
             .updatesPerSecond = 40,
             .validation = true,
         };
@@ -16,7 +16,6 @@ pub const Constants = struct {
     }
 
     pub fn cleanup(self: *Constants, allocator: std.mem.Allocator) void {
-        _ = self;
-        _ = allocator;
+        allocator.free(self.gpu);
     }
 };

@@ -32,6 +32,8 @@ pub const Window = struct {
             return err;
         }
 
+        glfw.windowHint(.client_api, .no_api);
+
         const window = try glfw.createWindow(1200, 800, windowTitle, null, null);
 
         log.debug("Created window", .{});
